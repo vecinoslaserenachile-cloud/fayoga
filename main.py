@@ -26,12 +26,13 @@ lottie_dance = load_lottie("https://lottie.host/0a9f5d34-d9ae-44d5-83e8-8a033b00
 lottie_ia = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
 # ==========================================
-# 2. DISEÑO AVANZADO (ALTO CONTRASTE PARA MÓVIL)
+# 2. DISEÑO AVANZADO (CORRECCIÓN MÓVIL Y UX IA)
 # ==========================================
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Quicksand:wght@400;600;700&display=swap');
     
+    /* FONDO GENERAL */
     .stApp { background: linear-gradient(135deg, #fdfaf6 0%, #e9edc9 100%); background-attachment: fixed; }
     .main .block-container { padding-top: 3rem !important; max-width: 95% !important; }
 
@@ -47,14 +48,18 @@ st.markdown("""
         margin-top: 15px; text-transform: uppercase;
     }
 
-    /* TARJETAS PREMIUM */
+    /* CORRECCIÓN DE CONTRASTE MÓVIL: Títulos generales SIEMPRE verde oscuro */
+    h1, h2, h3, h4, h5, h6 { color: #2D4030 !important; font-family: 'Playfair Display', serif !important; }
+    p, label { color: #1A1A1A !important; font-family: 'Quicksand', sans-serif !important; }
+
+    /* TARJETAS PREMIUM (Excepción: Aquí adentro todo es blanco) */
     .premium-card {
         background: #2D4030; border-radius: 35px; padding: 40px; border: 2px solid #A3B18A;
         box-shadow: 0 20px 40px rgba(0,0,0,0.15); margin-bottom: 30px; transition: transform 0.3s ease;
     }
     .premium-card:hover { transform: translateY(-5px); }
-    .premium-card h2, .premium-card h3, .premium-card h4 { color: #FFFFFF !important; font-family: 'Playfair Display', serif !important; }
-    .premium-card p, .premium-card li { color: #FDF9F3 !important; font-family: 'Quicksand', sans-serif !important; font-size: 1.15rem !important; line-height: 1.6; }
+    .premium-card h2, .premium-card h3, .premium-card h4 { color: #FFFFFF !important; }
+    .premium-card p, .premium-card li { color: #FDF9F3 !important; font-size: 1.15rem !important; line-height: 1.6; }
 
     /* BOTONERA CRISTALINA (TABS) */
     .stTabs [data-baseweb="tab-list"] { 
@@ -63,20 +68,33 @@ st.markdown("""
         padding: 15px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.4);
     }
     .stTabs [data-baseweb="tab"] { 
-        font-size: 1.3rem !important; font-family: 'Quicksand', sans-serif !important; font-weight: 700 !important; 
-        color: #2D4030 !important; background: rgba(255, 255, 255, 0.6);
-        padding: 12px 30px !important; border-radius: 20px !important; transition: all 0.3s ease;
+        font-size: 1.3rem !important; font-weight: 700 !important; color: #2D4030 !important; 
+        background: rgba(255, 255, 255, 0.6); padding: 12px 30px !important; border-radius: 20px !important; transition: all 0.3s ease;
     }
-    /* CORRECCIÓN DE CONTRASTE: FONDO MÁS OSCURO PARA QUE EL BLANCO RESALTE EN MÓVIL */
     .stTabs [aria-selected="true"] { 
         background: linear-gradient(45deg, #2D4030 0%, #4A5D4E 100%) !important; color: white !important;
         transform: scale(1.05); box-shadow: 0 10px 20px rgba(45, 64, 48, 0.4) !important; border-bottom: none !important;
     }
 
+    /* MEJORAS INTERFAZ FABI IA (Textos y Cajas más grandes) */
+    .stTextInput input {
+        font-size: 1.25rem !important; 
+        padding: 15px !important; 
+        border-radius: 15px !important; 
+        border: 2px solid #A3B18A !important;
+        background: rgba(255,255,255,0.9) !important;
+        color: #2D4030 !important;
+    }
+    .stAlert p {
+        font-size: 1.25rem !important; 
+        font-weight: 600 !important; 
+        line-height: 1.5 !important;
+    }
+
     /* IMÁGENES */
     img { border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
 
-    /* BOTONES INTERNOS DE ALTO CONTRASTE */
+    /* BOTONES INTERNOS */
     .stButton>button {
         background: linear-gradient(45deg, #2D4030 0%, #6B8E23 100%); color: white !important; 
         border-radius: 50px !important; border: none !important; padding: 15px 35px !important; 
@@ -98,16 +116,23 @@ with c_logo_2:
 st.divider()
 
 # ==========================================
-# RADIO FAYOGA (AHORA SIEMPRE VISIBLE Y CON AUTOPLAY AL SELECCIONAR)
+# RADIO FAYOGA (10 PISTAS)
 # ==========================================
 col_rad1, col_rad2, col_rad3 = st.columns([1, 2, 1])
 with col_rad2:
-    st.markdown("<h4 style='text-align: center; color: #2D4030; font-family: Quicksand;'>📻 Radio Fayoga: Sintoniza tu Frecuencia</h4>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center;'>📻 Radio Fayoga: Sintoniza tu Frecuencia</h4>", unsafe_allow_html=True)
     pistas_radio = {
-        "🌿 Despertar Zen (Silencio)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", 
-        "💧 Flujo de Vinyasa (Activo)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+        "🌿 1. Despertar Zen (Silencio)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", 
+        "💧 2. Flujo de Vinyasa (Activo)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        "🌬️ 3. Respiración Profunda (Paz)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        "🪷 4. Meditación Loto (Mantras)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+        "🔥 5. Fuego Interior (Energía)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+        "🎋 6. Feng Shui Balance (Naturaleza)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+        "🌙 7. Relajación Nocturna (Ondas)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+        "💃 8. Biodanza Ritual (Percusión)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+        "✨ 9. Conexión Afectiva (Piano)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+        "🧘‍♀️ 10. Namasté (Cierre Suave)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"
     }
-    # Al seleccionar, el parámetro autoplay=True hace que arranque sola
     tema_elegido = st.selectbox("Elige tu pista:", list(pistas_radio.keys()), label_visibility="collapsed")
     st.audio(pistas_radio[tema_elegido], format="audio/mp3", autoplay=True)
 
@@ -221,7 +246,7 @@ with tabs[3]:
     
     col_p1, col_p2, col_p3 = st.columns(3)
     if col_p1.button("😴 Insomnio / Ansiedad"):
-        st.success("🧠 **FABI IA:** Para la ansiedad nocturna, te recomiendo el Nivel 10 (Savasana) y escuchar la 'Radio Fayoga'.")
+        st.success("🧠 **FABI IA:** Para la ansiedad nocturna, te recomiendo el Nivel 10 (Savasana) y escuchar la pista 'Despertar Zen' en la radio.")
     if col_p2.button("🔋 Fatiga / Desmotivación"):
         st.success("🧠 **FABI IA:** El 'Vinyasa Flow' o el Nivel 8 (Pranayama de Fuego) despertarán tu energía vital al instante.")
     if col_p3.button("💥 Estrés / Bloqueo"):
@@ -233,10 +258,13 @@ with tabs[3]:
     with col_ia1:
         if lottie_ia: st_lottie(lottie_ia, height=250)
     with col_ia2:
-        st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='premium-card' style='padding: 30px;'>", unsafe_allow_html=True)
         pregunta = st.text_input("O describe cómo te sientes hoy:", placeholder="Ej: Siento tensión en la espalda baja por tristeza...")
         if st.button("Consultar a FABI Expert"):
-            st.info(f"**FABI responde:** Evaluando tu inquietud sobre '{pregunta}'... Te sugiero explorar una clase de 'Yoga para Dolencias' enfocada en la liberación emocional de la zona lumbar.")
+            if pregunta:
+                st.info(f"**FABI responde:** Evaluando tu inquietud sobre '{pregunta}'... Te sugiero explorar una clase de 'Yoga para Dolencias' enfocada en la liberación emocional y física de esa zona.")
+            else:
+                st.warning("Escribe cómo te sientes para que pueda ayudarte.")
         st.markdown("</div>", unsafe_allow_html=True)
 
 with tabs[4]: 
@@ -264,4 +292,4 @@ with tabs[4]:
                 st.rerun()
 
 # FOOTER
-st.markdown("<br><hr><p style='text-align: center; opacity: 0.6;'>FAYOGA 2026 | Wellness SaaS Premium por Fabiola Pastén</p>", unsafe_allow_html=True)
+st.markdown("<br><hr><p style='text-align: center; color: #2D4030; font-weight: 600;'>FAYOGA 2026 | Wellness SaaS Premium por Fabiola Pastén</p>", unsafe_allow_html=True)
