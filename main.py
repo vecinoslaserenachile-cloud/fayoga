@@ -1,10 +1,14 @@
 from fastapi import FastAPI
+from app.routers import reservas  # 1. Importamos tu nuevo archivo de reservas
 
 app = FastAPI(
     title="Fayoga API",
     description="Backend oficial para la app de bienestar y yoga de Fabiola Pastén",
     version="1.0.0"
 )
+
+# 2. Le decimos a la app que use las rutas que creaste en la carpeta routers
+app.include_router(reservas.router, prefix="/api/v1/reservas", tags=["Reservas y Clases"])
 
 @app.get("/")
 def inicio():
@@ -13,15 +17,6 @@ def inicio():
         "proyecto": "Fayoga", 
         "instructora": "Fabiola Pastén"
     }
-
-@app.get("/api/v1/clases")
-def obtener_clases():
-    """Retorna el listado de clases impartidas por Fabiola."""
-    return [
-        {"id": 1, "estilo": "Hatha Yoga", "nivel": "Principiante", "cupos": 15},
-        {"id": 2, "estilo": "Vinyasa Flow", "nivel": "Intermedio", "cupos": 10},
-        {"id": 3, "estilo": "Yoga Restaurativo", "nivel": "Todos", "cupos": 20}
-    ]
 
 @app.get("/api/v1/fabiola")
 def perfil_instructora():
