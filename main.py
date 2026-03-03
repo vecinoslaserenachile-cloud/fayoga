@@ -2,8 +2,10 @@ import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
 import datetime
+import pandas as pd
+import numpy as np
 
-# 1. CONFIGURACIÓN PREMIUM SAAS
+# 1. CONFIGURACIÓN PREMIUM SAAS (Wide y Responsiva)
 st.set_page_config(
     page_title="Fayoga | Fabiola Pastén",
     page_icon="🧘‍♀️",
@@ -19,9 +21,10 @@ def load_lottie(url):
     except: return None
 
 # Inicialización de recursos visuales de alta calidad y bajo peso
+# Buscamos animaciones ZEN y Wellness livianas
 lottie_zen_lotus = load_lottie("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
-lottie_yoga_flow = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
-lottie_brain_wellness = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json") # Simulación
+lottie_yoga_main = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
+lottie_brain_data = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json") # Simulación Brain
 
 # 2. SISTEMA DE DISEÑO PRO (Corrección de visibilidad y Estética Glassmorphism)
 st.markdown("""
@@ -81,6 +84,9 @@ st.markdown("""
     .stTabs [data-baseweb="tab-list"] { justify-content: center; gap: 20px; }
     .stTabs [data-baseweb="tab"] { font-family: 'Quicksand', sans-serif; font-weight: 700; color: #4A5D4E; }
     .stTabs [aria-selected="true"] { color: #6B8E23 !important; border-bottom-color: #6B8E23 !important; }
+
+    /* Reducción de espacios nativos de Streamlit */
+    .block-container { padding-top: 5rem !important; padding-bottom: 2rem !important; }
     </style>
     
     <div class="ticker-wrapper"><div class="ticker">
@@ -116,7 +122,7 @@ with tabs[0]: # Dashboard Premium (Lógica de SEO Wellness Top)
     with c2:
         st.markdown("""<div class='premium-card'>
             <h4>💃 Biodanza grupal</h4>
-            <p>Integración humana y renovación vital a través del movimiento y la música orgánica. Talleres boutique exclusivos.</p>
+            <p>Integración humana y renovación vital a través del movement y la música orgánica. Talleres boutique exclusivos.</p>
         </div>""", unsafe_allow_html=True)
     with c3:
         st.markdown("""<div class='premium-card'>
@@ -128,6 +134,7 @@ with tabs[0]: # Dashboard Premium (Lógica de SEO Wellness Top)
     st.write("Fabiola utiliza su expertise periodístico para ofrecerte contenido único de bienestar.")
     col_content, col_content_2 = st.columns(2)
     with col_content:
+        # Reemplazo de video por imagen liviana (placeholder para ilustración/foto pro)
         st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800", caption="Yoga: La alineación interna.")
     with col_content_2:
         st.write("### El camino a la integración grupal.")
@@ -139,6 +146,7 @@ with tabs[1]: # Agendamiento Pro Nivel Premium (SaaS UX)
     col_ag1, col_ag2 = st.columns([2, 1])
     with col_ag1:
         st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
+        st.write("Completa tus datos para solicitar tu cupo.")
         nombre = st.text_input("Nombre Completo del Alumno", placeholder="Ej: Juan Pérez")
         email = st.text_input("Correo Electrónico Pro", placeholder="Ej: juan.perez@empresa.com")
         
@@ -157,7 +165,7 @@ with tabs[1]: # Agendamiento Pro Nivel Premium (SaaS UX)
                 st.warning("Por favor, completa los campos de Nombre y Email.")
         st.markdown("</div>", unsafe_allow_html=True)
     with col_ag2:
-        if lottie_yoga_flow: st_lottie(lottie_yoga_flow, height=300, key="yoga_booking")
+        if lottie_yoga_main: st_lottie(lottie_yoga_main, height=300, key="yoga_booking")
         st.markdown("<small style='text-align: center; display: block;'>Tu espacio de paz boutique te espera.</small>", unsafe_allow_html=True)
 
 with tabs[2]: # ASESORA IA: FABI (Integración de Expertise)
@@ -184,7 +192,7 @@ with tabs[2]: # ASESORA IA: FABI (Integración de Expertise)
             else:
                 st.warning("Por favor, ingresa tu consulta wellness.")
     with col_ia2:
-        if lottie_brain_wellness: st_lottie(lottie_brain_wellness, height=250, key="brain_ia")
+        if lottie_brain_data: st_lottie(lottie_brain_data, height=250, key="brain_ia")
 
 with tabs[3]: # Hemeroteca Ágil Nivel Pro (Noticias & SEO)
     st.markdown("### Hemeroteca Mundial Curada por Periodista Experta")
@@ -203,7 +211,7 @@ with tabs[3]: # Hemeroteca Ágil Nivel Pro (Noticias & SEO)
         st.markdown("""<div class='premium-card'>
             <small>MARZO 2026</small>
             <h4>Biodanza en el Freelance</h4>
-            <p>Cómo el movimiento grupal está mejorando la productividad en los centros de coworking. Reportaje exclusivo de Fayoga.</p>
+            <p>Cómo el movement grupal está mejorando la productividad en los centros de coworking. Reportaje exclusivo de Fayoga.</p>
             <a href='#' style='color: #6B8E23; text-decoration: none; font-weight: 700;'>Ver reportaje...</a>
         </div>""", unsafe_allow_html=True)
     with col_n3:
@@ -213,6 +221,21 @@ with tabs[3]: # Hemeroteca Ágil Nivel Pro (Noticias & SEO)
             <p>Tendencias globales en well-being para empresas top. Fabiola Pastén ofrece las claves para la comunicación consciente empresarial.</p>
             <a href='#' style='color: #6B8E23; text-decoration: none; font-weight: 700;'>Suscribirse al feed...</a>
         </div>""", unsafe_allow_html=True)
+
+    st.divider()
+    # Sección de Datos y Gráficos (Placeholder Pro)
+    st.markdown("### Datos Globales Wellness (Simulación de Hemeroteca)")
+    chart_data = pd.DataFrame(
+        np.random.randn(20, 3),
+        columns=['Interés Yoga', 'Adopción Biodanza', 'Mindfulness Corp']
+    )
+    # Gráfico de líneas nativo de Streamlit (liviano)
+    st.line_chart(chart_data)
+    
+    # Placeholder para Mapa (Nativo y Responsivo)
+    st.markdown("### Cobertura Fayoga (Nacional)")
+    map_data = pd.DataFrame({'lat': [-29.9045], 'lon': [-71.2519]}) # La Serena
+    st.map(map_data)
 
 # FOOTER PRO
 st.markdown("<br><hr><p style='text-align: center; opacity: 0.6; font-size: 0.9rem;'>Fayoga 2026 | Wellness SaaS Premium de Clase Mundial por Fabiola Pastén</p>", unsafe_allow_html=True)
