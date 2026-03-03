@@ -1,126 +1,143 @@
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
+import time
 
-# 1. Configuración de Marca y Layout
+# 1. Configuración de Marca y Layout de Pantalla Completa
 st.set_page_config(page_title="Fayoga | Fabiola Pastén", page_icon="🧘‍♀️", layout="wide")
 
-# Función segura para animaciones
-def load_lottieurl(url: str):
+# Función para carga segura de animaciones
+def load_lottie(url):
     try:
         r = requests.get(url)
         return r.json() if r.status_code == 200 else None
-    except:
-        return None
+    except: return None
 
-# Carga de recursos visuales livianos
-lottie_yoga = load_lottieurl("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
-lottie_zen = load_lottieurl("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
+# Recursos Visuales (Lotties Premium)
+lottie_yoga = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
+lottie_lotus = load_lottie("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
-# 2. Estilo CSS "Relajante y Premium"
+# 2. SISTEMA DE DISEÑO (CSS Personalizado)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap');
     
-    html, body, [class*="css"] {
-        font-family: 'Quicksand', sans-serif;
-        background-color: #fdfaf6;
-        color: #2d4030;
-    }
-    .stApp { background-color: #fdfaf6; }
+    html, body, [class*="css"] { font-family: 'Quicksand', sans-serif; background-color: #FDF9F3; color: #2D4030; }
     
-    /* Tarjetas de Experto */
-    .expert-card {
-        background: white;
-        padding: 2rem;
-        border-radius: 25px;
-        box-shadow: 0 10px 30px rgba(107, 142, 35, 0.05);
-        border: 1px solid #e9edc9;
-        margin-bottom: 1rem;
+    /* HUINCHA AMERICANA (News Ticker) */
+    .ticker-wrapper {
+        width: 100%; overflow: hidden; background: #6B8E23; color: white;
+        padding: 10px 0; position: fixed; top: 0; left: 0; z-index: 999;
     }
+    .ticker {
+        display: inline-block; white-space: nowrap; padding-left: 100%;
+        animation: ticker 30s linear infinite; font-weight: bold; font-size: 1.1rem;
+    }
+    @keyframes ticker {
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    /* CARDS RESPONSIVAS */
+    .feature-card {
+        background: white; padding: 2rem; border-radius: 30px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.03); border: 1px solid #E9EDC9;
+        transition: transform 0.3s ease; height: 100%;
+    }
+    .feature-card:hover { transform: translateY(-10px); }
     
-    /* Botones Suaves */
-    .stButton>button {
-        background-color: #a3b18a;
-        color: white;
-        border-radius: 30px;
-        border: none;
-        padding: 0.6rem 2rem;
-        transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
-        background-color: #588157;
-        transform: translateY(-2px);
-    }
-    
-    /* Header Personalizado */
-    .header-text { text-align: center; padding: 2rem 0; }
+    .stTabs [data-baseweb="tab-list"] { justify-content: center; }
     </style>
+    
+    <div class="ticker-wrapper">
+        <div class="ticker">
+            ✨ PRÓXIMO TALLER DE BIODANZA EN LA SERENA - SÁBADO 15 MARZO ✨ | 🧘 NUEVOS CUPOS PARA YOGA MATINAL ONLINE | 📚 CURADURÍA DE BIENESTAR POR FABIOLA PASTÉN | ✨ SUSCRÍBETE AL NEWSLETTER WELLNESS ✨
+        </div>
+    </div>
+    <br><br>
     """, unsafe_allow_html=True)
 
-# 3. Identidad: Fabiola Pastén
+# 3. HEADER DINÁMICO
 with st.container():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if lottie_zen: st_lottie(lottie_zen, height=180, key="zen")
-        st.markdown("<div class='header-text'><h1>Fayoga</h1><p style='font-size: 1.2rem; font-style: italic;'>By Fabiola Pastén</p></div>", unsafe_allow_html=True)
-        st.markdown("""
-        <div style='text-align: center;'>
-        <b>Periodista · Comunicadora · Expert en Wellness, Yoga & Biodanza</b><br>
-        Un espacio diseñado para la integración del cuerpo, la mente y el alma a través de la comunicación consciente.
-        </div>
-        """, unsafe_allow_html=True)
+        if lottie_lotus: st_lottie(lottie_lotus, height=180, key="lotus")
+        st.markdown("<h1 style='text-align: center; color: #4A5D4E;'>Fayoga</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 1.2rem;'><b>Fabiola Pastén</b><br>Periodista & Wellness Expert</p>", unsafe_allow_html=True)
 
-st.divider()
+# 4. NAVEGACIÓN Y CONTENIDO
+tabs = st.tabs(["💎 Dashboard", "🧘 Mi Práctica", "📰 Noticias Ágiles", "📩 Contacto"])
 
-# 4. Navegación Intuitiva (Estructura de Empresa Top)
-tabs = st.tabs(["🧘 Yoga & Bienestar", "💃 Biodanza", "📚 Hemeroteca Mundial", "📅 Agenda Tu Sesión"])
-
-with tabs[0]: # Yoga
-    st.markdown("### Disciplinas y Práctica")
-    c1, c2 = st.columns(2)
+with tabs[0]: # Dashboard / Inicio
+    st.markdown("### Experiencia Wellness de Clase Mundial")
+    c1, c2, c3 = st.columns([1, 1, 1])
     with c1:
-        st.markdown("""
-        <div class='expert-card'>
-        <h4>Yoga Consciente</h4>
-        <p>Sesiones personalizadas de Hatha y Vinyasa Flow que priorizan la biomecánica 
-        saludable y la calma mental.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800")
+        st.markdown("""<div class='feature-card'>
+            <h4>🧘 Yoga Integral</h4>
+            <p>Clases de Hatha y Vinyasa Flow enfocadas en la alineación y la paz mental. 
+            Sesiones grabadas y en vivo.</p>
+        </div>""", unsafe_allow_html=True)
     with c2:
-        if lottie_yoga: st_lottie(lottie_yoga, height=350, key="yoga_main")
+        st.markdown("""<div class='feature-card'>
+            <h4>💃 Biodanza</h4>
+            <p>El sistema de integración humana a través del movimiento y la música. 
+            Talleres grupales exclusivos.</p>
+        </div>""", unsafe_allow_html=True)
+    with c3:
+        st.markdown("""<div class='feature-card'>
+            <h4>🗞️ Periodismo Wellness</h4>
+            <p>Información curada con rigor periodístico sobre salud, neurociencia 
+            y tendencias globales.</p>
+        </div>""", unsafe_allow_html=True)
 
-with tabs[1]: # Biodanza
-    st.markdown("### El Movimiento de la Vida")
-    st.write("Como experta en **Biodanza**, Fabiola facilita talleres de integración afectiva, renovando la alegría de vivir a través de la música y la danza.")
-    st.video("https://www.youtube.com/watch?v=Ev6LhJ6_X_M") # Clip ilustrativo liviano
+with tabs[1]: # Mi Práctica (Simulación/Interactividad)
+    st.markdown("### Pausa Activa Consciente")
+    col_p1, col_p2 = st.columns([2, 1])
+    with col_p1:
+        st.info("Utiliza este simulador para una respiración guiada de 1 minuto.")
+        if st.button("🚀 Iniciar Respiración Guiada"):
+            prog = st.progress(0)
+            status = st.empty()
+            for i in range(100):
+                if i < 50: status.text("Inhala profundamente...")
+                else: status.text("Exhala suavemente...")
+                prog.progress(i + 1)
+                time.sleep(0.06)
+            st.success("Pausa completada. Namasté.")
+    with col_p2:
+        if lottie_yoga: st_lottie(lottie_yoga, height=250, key="yoga_sim")
 
-with tabs[2]: # Hemeroteca (Perfil Periodístico)
-    st.markdown("### Hemeroteca Wellness Mundial")
-    st.info("Curaduría periodística de Fabiola Pastén sobre las últimas tendencias globales en salud.")
-    
-    h1, h2, h3 = st.columns(3)
-    with h1:
-        st.image("https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=400")
-        st.caption("Neurociencia y Meditación en 2026")
-    with h2:
-        st.image("https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=400")
-        st.caption("La Biodanza como terapia social")
-    with h3:
-        st.image("https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?auto=format&fit=crop&w=400")
-        st.caption("Wellness Corporativo de Clase Mundial")
+with tabs[2]: # Noticias Ágiles (Hemeroteca)
+    st.markdown("### ⚡ Lo Último en Bienestar")
+    # Grid de noticias tipo "News Feed"
+    n1, n2 = st.columns(2)
+    with n1:
+        st.markdown("""<div class='feature-card'>
+            <small>MARZO 2026</small>
+            <h5>Neurociencia y Meditación</h5>
+            <p>Nuevos estudios confirman que 10 min de yoga diario rejuvenecen el cerebro...</p>
+            <a href='#'>Leer más</a>
+        </div>""", unsafe_allow_html=True)
+    with n2:
+        st.markdown("""<div class='feature-card'>
+            <small>MARZO 2026</small>
+            <h5>Biodanza en Empresas</h5>
+            <p>Cómo el movimiento grupal está mejorando la productividad en el coworking...</p>
+            <a href='#'>Leer más</a>
+        </div>""", unsafe_allow_html=True)
 
-with tabs[3]: # Agenda
+with tabs[3]: # Contacto / Agenda
     st.markdown("### Conectemos")
-    with st.container():
-        st.markdown("<div class='expert-card'>", unsafe_allow_html=True)
-        nombre = st.text_input("Tu Nombre")
-        area = st.multiselect("Me interesa:", ["Clases de Yoga", "Talleres de Biodanza", "Comunicación Wellness"])
-        if st.button("Enviar Solicitud"):
-            st.balloons()
-            st.success(f"Gracias, {nombre}. Fabiola se pondrá en contacto contigo pronto.")
-        st.markdown("</div>", unsafe_allow_html=True)
+    col_f1, col_f2 = st.columns(2)
+    with col_f1:
+        with st.form("agenda"):
+            st.text_input("Nombre")
+            st.selectbox("Me interesa", ["Yoga", "Biodanza", "Coaching Wellness"])
+            st.form_submit_button("Enviar Solicitud")
+    with col_f2:
+        st.write("**Fabiola Pastén**")
+        st.write("📍 La Serena, Chile")
+        st.write("📧 contacto@fayoga.cl")
 
-# Footer liviano
-st.markdown("<br><hr><p style='text-align: center; opacity: 0.6;'>Fayoga 2026 | Innovación en Bienestar</p>", unsafe_allow_html=True)
+# FOOTER
+st.markdown("<br><hr><p style='text-align: center; opacity: 0.5;'>Fayoga 2026 | Wellness de Clase Mundial</p>", unsafe_allow_html=True)
