@@ -6,7 +6,7 @@ import numpy as np
 import time
 
 # ==========================================
-# 1. NÚCLEO Y PANTALLA TOTAL (TV & 4K)
+# 1. NÚCLEO Y PANTALLA TOTAL
 # ==========================================
 st.set_page_config(
     page_title="Fayoga | Academia Premium",
@@ -15,153 +15,161 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Cargador de activos visuales
 def load_lottie(url: str):
     try:
         r = requests.get(url, timeout=5)
         return r.json() if r.status_code == 200 else None
     except: return None
 
+# Animaciones de alta gama
+lottie_yoga_header = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json") # Icono Yoga para el header
 lottie_zen = load_lottie("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
 # ==========================================
-# 2. INYECCIÓN DE DISEÑO "ENTERPRISE BOUTIQUE"
+# 2. SISTEMA DE DISEÑO (CSS EQUILIBRADO)
 # ==========================================
-# Aquí forzamos a Streamlit a ocupar TODO el espacio y escalamos el logo masivamente
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Quicksand:wght@300;400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Quicksand:wght@300;500;700&display=swap');
     
-    /* Configuración de Pantalla Total */
     .stApp {
         background: linear-gradient(135deg, #fdfaf6 0%, #e9edc9 100%);
         background-attachment: fixed;
     }
     
-    /* ELIMINAR MÁRGENES NATIVOS - OCUPAR TODA LA TV */
+    /* ELIMINAR MÁRGENES NATIVOS */
     .main .block-container {
-        padding-top: 5rem !important;
-        max-width: 98% !important;
-        padding-left: 2% !important;
-        padding-right: 2% !important;
+        padding-top: 4rem !important;
+        max-width: 95% !important;
     }
 
-    /* FAYOGA: ESCALADO MONUMENTAL (10x CUERPO) */
+    /* FAYOGA: ESCALADO MONUMENTAL */
     .brand-title {
         font-family: 'Playfair Display', serif;
-        font-size: clamp(8rem, 25vw, 15rem) !important;
-        color: #2D4030;
+        font-size: clamp(6rem, 20vw, 12rem) !important;
+        color: #4A5D4E;
         text-align: center;
         line-height: 0.8;
         font-weight: 900;
-        letter-spacing: -5px;
         margin-bottom: 0px;
-        background: linear-gradient(to bottom, #2D4030, #6B8E23);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.1));
+        margin-top: -20px;
+        text-shadow: 2px 5px 15px rgba(0,0,0,0.1);
     }
 
     .brand-subtitle {
         font-family: 'Quicksand', sans-serif;
-        font-size: clamp(1.5rem, 4vw, 3.5rem);
+        font-size: clamp(1.2rem, 3vw, 2.5rem) !important;
         text-align: center;
-        color: #4A5D4E;
-        font-weight: 300;
-        letter-spacing: 20px;
+        color: #6B8E23;
+        font-weight: 500;
+        letter-spacing: 15px;
         text-transform: uppercase;
-        margin-top: -20px;
+        margin-top: 10px;
+        margin-bottom: 40px;
     }
 
-    /* TARJETAS PREMIUM CON ILUSTRACIÓN DE FONDO */
+    /* RESTAURAR PESTAÑAS (TABS) GIGANTES Y LEGIBLES */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 20px;
+        justify-content: center;
+    }
+    .stTabs [data-baseweb="tab"] {
+        font-size: 1.5rem !important;
+        font-family: 'Quicksand', sans-serif !important;
+        font-weight: 700 !important;
+        color: #4A5D4E !important;
+        padding: 10px 20px;
+    }
+    .stTabs [aria-selected="true"] {
+        border-bottom-color: #6B8E23 !important;
+        color: #2D4030 !important;
+    }
+
+    /* TARJETAS PREMIUM */
     .premium-card {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(25px);
-        border-radius: 50px;
-        padding: 60px;
+        border-radius: 40px;
+        padding: 40px;
         border: 2px solid #A3B18A;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.1);
-        margin-bottom: 40px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
         color: #1A1A1A !important;
     }
+    
+    .premium-card h2, .premium-card h3, .premium-card h4 {
+        color: #2D4030 !important;
+        font-family: 'Playfair Display', serif !important;
+    }
 
-    /* BOTONERÍA ESTILO SPA */
+    /* RESTAURAR BOTONERÍA MAJESTUOSA */
     .stButton>button {
         background: linear-gradient(45deg, #4A5D4E 0%, #6B8E23 100%);
         color: white !important;
-        border-radius: 100px;
-        border: none;
-        padding: 30px 80px;
-        font-weight: 700;
-        font-size: 1.8rem;
-        width: 100%;
-        box-shadow: 0 20px 40px rgba(107, 142, 35, 0.3);
-        transition: all 0.4s ease;
+        border-radius: 50px !important;
+        border: none !important;
+        padding: 20px 40px !important;
+        font-weight: 700 !important;
+        font-size: 1.5rem !important;
+        width: 100% !important;
+        box-shadow: 0 10px 20px rgba(107, 142, 35, 0.3) !important;
+        transition: all 0.3s ease !important;
     }
-    .stButton>button:hover { transform: translateY(-5px) scale(1.02); }
+    .stButton>button:hover { transform: translateY(-3px) !important; box-shadow: 0 15px 25px rgba(107, 142, 35, 0.5) !important; }
 
-    /* TICKER / HUINCHA AMERICANA */
-    .ticker-wrapper {
-        width: 100%; overflow: hidden; background: #2D4030; color: #E9EDC9;
-        padding: 15px 0; position: fixed; top: 0; left: 0; z-index: 9999;
-    }
-    .ticker {
-        display: inline-block; white-space: nowrap; padding-left: 100%;
-        animation: ticker 40s linear infinite; font-weight: 700; font-size: 1.5rem;
-    }
-    @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
-    /* ILUSTRACIONES DE RELLENO (ESCRITORIO) */
-    @media (min-width: 1200px) {
-        .stApp::before {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 150px; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/leaves.png');
-            opacity: 0.1; pointer-events: none;
-        }
+    /* TEXTOS GENERALES */
+    p, li, label { 
+        font-size: 1.2rem !important; 
+        color: #1A1A1A !important; 
+        font-family: 'Quicksand', sans-serif !important; 
     }
     </style>
-    
-    <div class="ticker-wrapper"><div class="ticker">
-        🌿 BIENVENIDOS A LA ACADEMIA FAYOGA | ✨ NUEVOS NIVELES DE BIODANZA DISPONIBLES | 🎓 YOGADOC: TU RUTA HACIA EL MODO PREMIUM | 🤖 FABI IA ASESORA ACTIVA
-    </div></div>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. HEADER MAJESTUOSO (LOGO Y NOMBRE)
+# 3. HEADER MAJESTUOSO (CON ICONO YOGA)
 # ==========================================
-st.markdown("<br><br><br>", unsafe_allow_html=True)
-c_logo_1, c_logo_2, c_logo_3 = st.columns([1, 1, 1])
+c_logo_1, c_logo_2, c_logo_3 = st.columns([1, 2, 1])
 with c_logo_2:
-    st.markdown("""<img src="https://lookaside.fbsbx.com/lookaside/crawler/instagram/fayoga.bienestar/profile_pic.jpg" 
-                style="border-radius: 50%; border: 8px solid #A3B18A; width: 80%; margin: auto; display: block; box-shadow: 0 30px 60px rgba(0,0,0,0.2);">""", unsafe_allow_html=True)
-
-st.markdown("<h1 class='brand-title'>FAYOGA</h1>", unsafe_allow_html=True)
-st.markdown("<p class='brand-subtitle'>Fabiola Pastén</p>", unsafe_allow_html=True)
+    # Icono de Yoga animado sobre el título
+    if lottie_yoga_header: 
+        st_lottie(lottie_yoga_header, height=180, key="header_icon")
+    st.markdown("<h1 class='brand-title'>FAYOGA</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='brand-subtitle'>Fabiola Pastén</p>", unsafe_allow_html=True)
 
 # ==========================================
 # 4. SISTEMA DE APRENDIZAJE 10 NIVELES
 # ==========================================
 tabs = st.tabs(["💎 Dashboard", "🎓 YogaDoc Learning", "💃 Biodanza Flow", "👥 Alumnos", "🤖 FABI IA"])
 
-with tabs[1]: # YogaDoc: El corazón del Learning
+with tabs[0]: # Dashboard
+    st.markdown("## Bienvenida al Universo Fayoga")
+    col_d1, col_d2 = st.columns([1, 1])
+    with col_d1:
+        st.markdown("""<div class='premium-card'>
+            <h3>La Evolución del Bienestar</h3>
+            <p>Fayoga trasciende la clase de yoga tradicional para convertirse en un sistema de aprendizaje integral. Navega por nuestros módulos interactivos y descubre una nueva forma de conectar cuerpo y mente.</p>
+        </div>""", unsafe_allow_html=True)
+    with col_d2:
+        st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200", use_container_width=True)
+
+with tabs[1]: # YogaDoc: 10 Niveles + Premium
     st.markdown("## YogaDoc: Progresión de Conciencia")
     
-    # Lógica de Niveles (Cambian ejercicios, no dificultad)
-    nivel = st.select_slider("Tu Progreso Actual", options=[i for i in range(1, 12)], 
+    nivel = st.select_slider("Selecciona tu Nivel", options=[i for i in range(1, 12)], 
                             format_func=lambda x: f"Nivel {x}" if x <= 10 else "💎 MODO PREMIUM")
     
     if nivel <= 10:
         ejercicios = {
             1: ("Respiración Primordial", "Iniciación al silencio mental.", "https://images.unsplash.com/photo-1506126613408-eca07ce68773"),
             2: ("Alineación Ósea", "Conexión con la estructura física.", "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b"),
-            3: ("Fluidez Vinyasa", "El arte de transitar entre estados.", "https://images.unsplash.com/photo-1599447421416-3414500d18a5"),
-            4: ("Resonancia Vocal", "Uso del sonido para equilibrar chakras.", "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0"),
-            5: ("Equilibrio Estático", "Encontrar el centro en la quietud.", "https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539"),
-            6: ("Biodanza Matinal", "Movimiento rítmico de despertar.", "https://images.unsplash.com/photo-1518310383802-640c2de311b2"),
-            7: ("Pranayama Avanzado", "Control total de la energía vital.", "https://images.unsplash.com/photo-1499209974431-9dac3adaf471"),
-            8: ("Yoga de los Sentidos", "Exploración sensorial consciente.", "https://images.unsplash.com/photo-1524633212363-36dd03f0dd2e"),
-            9: ("Meditación Periodística", "Análisis crítico del yo interior.", "https://images.unsplash.com/photo-1474418397713-7ded018049ce"),
+            3: ("Fluidez Vinyasa", "El arte de transitar.", "https://images.unsplash.com/photo-1599447421416-3414500d18a5"),
+            4: ("Resonancia Vocal", "Uso del sonido.", "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0"),
+            5: ("Equilibrio Estático", "Centro en la quietud.", "https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539"),
+            6: ("Biodanza Matinal", "Movimiento de despertar.", "https://images.unsplash.com/photo-1518310383802-640c2de311b2"),
+            7: ("Pranayama Avanzado", "Control de energía vital.", "https://images.unsplash.com/photo-1499209974431-9dac3adaf471"),
+            8: ("Yoga de los Sentidos", "Exploración consciente.", "https://images.unsplash.com/photo-1524633212363-36dd03f0dd2e"),
+            9: ("Meditación Periodística", "Análisis crítico interior.", "https://images.unsplash.com/photo-1474418397713-7ded018049ce"),
             10: ("Integración Fayoga", "La maestría de todos los elementos.", "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3")
         }
         
@@ -173,45 +181,54 @@ with tabs[1]: # YogaDoc: El corazón del Learning
                 <h2>Nivel {nivel}: {titulo}</h2>
                 <p>{desc}</p>
                 <hr>
-                <small>Completa este nivel para desbloquear el siguiente paso hacia el Modo Premium.</small>
+                <p>Completa este nivel para avanzar en tu ruta.</p>
             </div>""", unsafe_allow_html=True)
             
-            # Simulador de Respiración Contextualizado
-            st.write("### Simulador de Práctica")
             if st.button(f"🚀 Iniciar Práctica de {titulo}"):
                 bar = st.progress(0)
                 status = st.empty()
                 for i in range(101):
                     msg = "Inhala..." if i < 50 else "Exhala..."
-                    status.markdown(f"### {msg}")
+                    status.markdown(f"**{msg}**")
                     bar.progress(i)
-                    time.sleep(0.06)
+                    time.sleep(0.04)
                 st.success(f"¡Nivel {nivel} Completado!")
-        
         with col_ex2:
-            st.image(f"{img}?auto=format&fit=crop&w=1200", use_container_width=True)
+            st.image(f"{img}?auto=format&fit=crop&w=800", use_container_width=True)
 
     else:
-        st.markdown("""<div class='premium-card' style='text-align: center; border-color: #6B8E23; background: #2D4030; color: white !important;'>
-            <h1 style='color: white !important;'>💎 MODO PREMIUM BLOQUEADO</h1>
-            <p style='color: white !important;'>Has completado la formación básica de 10 niveles. 
-            El modo Premium incluye clases en vivo con Fabiola, Hemeroteca ilimitada y consultoría IA avanzada.</p>
-            <br>
-            <button style='padding: 20px 50px; border-radius: 50px; border: none; background: #E9EDC9; color: #2D4030; font-weight: bold; font-size: 1.5rem;'>
-                SUSCRIBIRSE AHORA
-            </button>
+        # Modo Premium Bloqueado
+        st.markdown("""<div class='premium-card' style='text-align: center; border-color: #6B8E23; background: #2D4030;'>
+            <h1 style='color: white !important;'>💎 MODO PREMIUM</h1>
+            <p style='color: #E9EDC9 !important; font-size: 1.5rem !important;'>Has completado la formación de 10 niveles. 
+            El modo Premium incluye clases en vivo con Fabiola y consultoría IA avanzada.</p>
         </div>""", unsafe_allow_html=True)
+        st.button("SUSCRIBIRSE AL MODO PREMIUM")
 
-with tabs[2]: # BIODANZA (NUEVO CONTENIDO)
+with tabs[2]: # BIODANZA
     st.markdown("## Biodanza: La Danza de la Vida")
-    st.write("Explora el sistema de integración afectiva de Fabiola Pastén.")
-    col_b1, col_b2, col_b3 = st.columns(3)
-    with col_b1:
-        st.markdown("<div class='premium-card'><h4>Rimo y Vitalidad</h4><p>Ejercicios para despertar la energía física.</p></div>", unsafe_allow_html=True)
-    with col_b2:
-        st.markdown("<div class='premium-card'><h4>Afectividad</h4><p>Conexión profunda con el otro y el grupo.</p></div>", unsafe_allow_html=True)
-    with col_b3:
-        st.markdown("<div class='premium-card'><h4>Creatividad</h4><p>Expresión libre a través del movimiento orgánico.</p></div>", unsafe_allow_html=True)
+    c_b1, c_b2 = st.columns(2)
+    with c_b1:
+        st.markdown("<div class='premium-card'><h4>Afectividad y Movimiento</h4><p>El sistema de integración grupal de Fabiola Pastén. Recupera la alegría de vivir a través del ritmo y la conexión humana.</p></div>", unsafe_allow_html=True)
+    with c_b2:
+        if lottie_zen: st_lottie(lottie_zen, height=250)
+
+with tabs[3]: # ALUMNOS
+    st.markdown("## Comunidad Fayoga")
+    df_alumnos = pd.DataFrame({
+        "Alumno": ["Rodrigo Godoy", "Fabiola Pastén", "María José", "Carlos R."],
+        "Nivel Actual": [8, 10, 3, 5],
+        "Membresía": ["Premium", "Staff", "Gratuito", "Live"]
+    })
+    st.dataframe(df_alumnos, use_container_width=True)
+
+with tabs[4]: # FABI IA
+    st.markdown("## FABI IA Asesora")
+    st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
+    pregunta = st.text_input("¿Qué área de tu bienestar quieres explorar hoy?")
+    if st.button("Consultar a FABI Expert"):
+        st.success(f"**FABI:** Para tu consulta sobre '{pregunta}', te recomiendo revisar el Nivel 3 de YogaDoc.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # FOOTER PRO
 st.markdown("<br><hr><p style='text-align: center; opacity: 0.6;'>FAYOGA 2026 | Wellness SaaS Premium por Fabiola Pastén</p>", unsafe_allow_html=True)
