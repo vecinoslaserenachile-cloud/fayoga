@@ -1,226 +1,178 @@
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
-from streamlit_extras.stylable_container import stylable_container
-from streamlit_extras.add_vertical_space import add_vertical_space
 import pandas as pd
 import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-from datetime import datetime, date
+from datetime import date
 import time
-import folium
-from streamlit_folium import st_folium
 
 # ==========================================
-# 1. NÚCLEO ESTRATÉGICO Y PANTALLA TOTAL
+# 1. CONFIGURACIÓN DE PANTALLA Y NÚCLEO
 # ==========================================
 st.set_page_config(
-    page_title="Fayoga Premium | Fabiola Pastén",
+    page_title="Fayoga Academy | Fabiola Pastén",
     page_icon="🧘‍♀️",
-    layout="wide", # Ocupación total de pantalla en PCs y TVs
+    layout="wide", # Clave para ocupar todo el espacio en TVs y PCs
     initial_sidebar_state="collapsed"
 )
 
-# Cargador de activos visuales vectoriales
 def load_lottie(url: str):
     try:
         r = requests.get(url, timeout=5)
         return r.json() if r.status_code == 200 else None
     except: return None
 
-# Galería de Animaciones Premium
-lottie_yoga_zen = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
-lottie_pulse = load_lottie("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
-lottie_brain_ia = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
+# Animaciones Pro
+lottie_yoga = load_lottie("https://lottie.host/9f5064e4-399a-426c-829d-64d898517228/qG4K3nE0H5.json")
+lottie_zen = load_lottie("https://lottie.host/807f4340-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
 # ==========================================
-# 2. SISTEMA DE DISEÑO "LIQUID ZEN" (CSS PRO)
+# 2. SISTEMA DE DISEÑO "BIG & BOLD" (CSS)
 # ==========================================
-# Forzamos contraste profundo y tipografía de gran formato para escritorio
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Quicksand:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Quicksand:wght@300;500;700&display=swap');
     
-    /* Configuración de Contenedor Expandido al 95% para TVs */
-    .stApp {
-        background: linear-gradient(135deg, #fdfaf6 0%, #e9edc9 100%);
-        color: #1A1A1A;
+    .stApp { background: linear-gradient(135deg, #fdfaf6 0%, #e9edc9 100%); }
+    .main .block-container { padding-top: 6rem !important; max-width: 95% !important; margin: auto; }
+
+    /* FAYOGA: 10 VECES MÁS CUERPO */
+    .brand-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(5rem, 15vw, 10rem) !important;
+        color: #2D4030 !important;
+        text-align: center; line-height: 0.9; font-weight: 900;
+        margin-bottom: 0px; text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
     }
-    .main .block-container {
-        padding-top: 5rem !important;
-        max-width: 95% !important;
-        margin: auto;
+    .brand-subtitle {
+        font-family: 'Quicksand', sans-serif;
+        font-size: clamp(1.5rem, 3vw, 2.8rem) !important;
+        text-align: center; color: #4A5D4E; font-weight: 300;
+        letter-spacing: 15px; text-transform: uppercase; margin-top: -10px;
     }
 
-    /* TEXTOS MAJESTUOSOS Y LEGIBLES */
-    h1 { 
-        font-size: clamp(4rem, 10vw, 7.5rem) !important; 
-        color: #2D4030 !important; 
-        font-family: 'Playfair Display', serif !important;
-        line-height: 1.1; margin-bottom: 0.5rem; text-align: center;
-    }
-    h2 { font-size: clamp(2.5rem, 6vw, 4rem) !important; color: #2D4030 !important; font-family: 'Playfair Display', serif !important; }
-    h3 { font-size: clamp(1.8rem, 4vw, 3rem) !important; color: #4A5D4E !important; font-family: 'Quicksand', sans-serif !important; }
-    
+    /* TEXTOS GIGANTES PARA PC/TV */
+    h1, h2, h3 { color: #2D4030 !important; font-family: 'Playfair Display', serif !important; }
     p, li, span, label { 
-        font-size: clamp(1.2rem, 1.8vw, 1.7rem) !important; 
-        color: #1A1A1A !important; 
-        font-weight: 500 !important;
-        line-height: 1.8;
+        font-size: clamp(1.2rem, 2vw, 1.6rem) !important; 
+        color: #1A1A1A !important; font-weight: 500 !important;
     }
 
-    /* Huincha Americana News Ticker (Estilo TV 2026) */
+    /* Glassmorphism Academy Cards */
+    .academy-card {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(20px); border-radius: 40px;
+        padding: 50px; border: 2px solid #A3B18A;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1); margin-bottom: 30px;
+    }
+
+    /* Botones Pro */
+    .stButton>button {
+        background: linear-gradient(45deg, #4A5D4E 0%, #6B8E23 100%);
+        color: white !important; border-radius: 100px; border: none; 
+        padding: 25px 60px; font-weight: 700; font-size: 1.6rem; width: 100%;
+        box-shadow: 0 15px 35px rgba(107, 142, 35, 0.3);
+    }
+    
     .ticker-wrapper {
         width: 100%; overflow: hidden; background: #2D4030; color: #E9EDC9;
         padding: 15px 0; position: fixed; top: 0; left: 0; z-index: 9999;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
     .ticker {
         display: inline-block; white-space: nowrap; padding-left: 100%;
         animation: ticker 35s linear infinite; font-weight: 700; font-size: 1.4rem;
     }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
-    /* Glassmorphism Premium Cards - Contraste Blindado */
-    .premium-card {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(25px);
-        border-radius: 50px;
-        padding: 60px;
-        border: 2px solid #A3B18A;
-        box-shadow: 0 30px 70px rgba(0,0,0,0.12);
-        margin-bottom: 40px;
-        transition: transform 0.4s ease;
-    }
-    .premium-card:hover { transform: translateY(-10px); }
-
-    /* Botones de Acción Estilo Boutique */
-    .stButton>button {
-        background: linear-gradient(45deg, #4A5D4E 0%, #6B8E23 100%);
-        color: white !important; border-radius: 100px; border: none; 
-        padding: 30px 80px; font-weight: 700; font-size: 1.8rem; width: 100%;
-        box-shadow: 0 20px 40px rgba(107, 142, 35, 0.4);
-        transition: 0.3s ease;
-    }
-    .stButton>button:hover { transform: scale(1.02); box-shadow: 0 25px 50px rgba(107, 142, 35, 0.6); }
-
-    /* Estilo Tabs Premium */
-    .stTabs [data-baseweb="tab-list"] { gap: 50px; justify-content: center; }
-    .stTabs [data-baseweb="tab"] { font-size: 1.8rem !important; font-weight: 700; color: #4A5D4E; }
-    
-    /* Imagen del Logo Circular Pro */
-    .logo-img {
-        border-radius: 50%;
-        border: 5px solid #A3B18A;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        display: block;
-        margin: auto;
-    }
     </style>
     
     <div class="ticker-wrapper"><div class="ticker">
-        🌟 NOVEDAD: Taller Boutique de Biodanza - Sábado 15 de Marzo en La Serena | 🧘‍♀️ Nuevos Cupos Yoga Matinal Online | 🗞️ Hemeroteca Wellness Curada por Fabiola Pastén | 🤖 CONSULTA A FABI IA
+        🧘 PRÓXIMO LIVE: YOGA DE INVIERNO - VIERNES 19:00 | 🎓 YOGADOC: NUEVO MÓDULO DE RESPIRACIÓN NIVEL 5 DISPONIBLE | 🤖 CONSULTA A FABI IA
     </div></div>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. HEADER MAJESTUOSO (LOGO REAL)
+# 3. HEADER MAJESTUOSO
 # ==========================================
-add_vertical_space(2)
+st.markdown("<br><br>", unsafe_allow_html=True)
 c_logo_1, c_logo_2, c_logo_3 = st.columns([1, 1, 1])
 with c_logo_2:
-    # Integración del Logo Real proporcionado
-    st.markdown(f"""
-        <img src="https://lookaside.fbsbx.com/lookaside/crawler/instagram/fayoga.bienestar/profile_pic.jpg" 
-             class="logo-img" width="250">
-    """, unsafe_allow_html=True)
+    st.markdown("""<img src="https://lookaside.fbsbx.com/lookaside/crawler/instagram/fayoga.bienestar/profile_pic.jpg" 
+                style="border-radius: 50%; border: 6px solid #A3B18A; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">""", unsafe_allow_html=True)
 
-st.markdown("<h1>FAYOGA</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 2.8rem !important; color: #4A5D4E; font-weight: 700; margin-top: -15px;'>Fabiola Pastén</p>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-style: italic; opacity: 0.8;'>Periodista, Comunicadora y Experta Wellness de Clase Mundial</p>", unsafe_allow_html=True)
+st.markdown("<h1 class='brand-title'>FAYOGA</h1>", unsafe_allow_html=True)
+st.markdown("<p class='brand-subtitle'>Fabiola Pastén</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; opacity: 0.8;'>Periodista & Wellness Master</p>", unsafe_allow_html=True)
 
 st.divider()
 
 # ==========================================
-# 4. EXPERIENCIA DE USUARIO (TABS INMERSIVAS)
+# 4. SISTEMA DE APRENDIZAJE (TABS)
 # ==========================================
-tabs = st.tabs(["💎 Dashboard Experience", "🧘‍♀️ Práctica Guiada", "🤖 FABI IA Asesora", "📅 Agenda Boutique", "📊 Métricas"])
+tabs = st.tabs(["💎 Dashboard", "🧘‍♂️ YogaDoc: Academia", "🤖 FABI IA", "📅 Niveles de Acceso", "👥 Alumnos"])
 
-with tabs[0]: # Dashboard Full Visual
-    st.markdown("## El Ecosistema de Bienestar Integrado")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("<div class='premium-card'><h3>Yoga Integral</h3><p>Alineación y paz mental con el rigor comunicacional de Fabiola. Sesiones terapéuticas 1:1 y grupales.</p></div>", unsafe_allow_html=True)
-    with c2:
-        st.markdown("<div class='premium-card'><h3>Biodanza</h3><p>Integración humana y renovación vital a través del movimiento orgánico y rítmico grupal.</p></div>", unsafe_allow_html=True)
-    with c3:
-        st.markdown("<div class='premium-card'><h3>Wellness Pro</h3><p>Consultoría en bienestar corporativo y comunicación consciente para instituciones de alto impacto.</p></div>", unsafe_allow_html=True)
+with tabs[0]: # Dashboard inmersivo
+    st.markdown("## El Universo de Fabiola")
+    col_d1, col_d2 = st.columns([1, 1])
+    with col_d1:
+        st.markdown("<div class='academy-card'><h3>Bienvenida a la Evolución</h3><p>Fayoga trasciende la clase de yoga tradicional para convertirse en un sistema de aprendizaje integral de bienestar y comunicación consciente.</p></div>", unsafe_allow_html=True)
+    with col_d2:
+        if lottie_yoga: st_lottie(lottie_yoga, height=400, key="main_yoga")
+
+with tabs[1]: # YOGADOC: ACADEMIA PROGRESIVA
+    st.markdown("## YogaDoc: Sistema de Aprendizaje Progresivo")
+    st.write("Avanza a través de los niveles de conciencia y técnica física.")
     
-    # Ilustración Premium
-    st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1800", caption="Fayoga: El arte de la integración.")
-
-with tabs[1]: # MI PRÁCTICA (GUIADA POR ANIMACIÓN CONTEXTUAL)
-    st.markdown("## Pausa Activa Consciente")
-    col_p1, col_p2 = st.columns([1, 1])
-    with col_p1:
-        st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-        st.write("Sigue el ritmo de la animación de la derecha. **Inhala cuando se expande, exhala cuando se contrae.**")
-        st.info("**Técnica Fayoga:** Respiración profunda para el reseteo del sistema nervioso.")
-        
-        if st.button("🚀 INICIAR GUÍA DE RESPIRACIÓN"):
-            status = st.empty()
-            prog = st.progress(0)
+    nivel_yoga = st.select_slider("Selecciona tu Nivel de Aprendizaje", options=[f"Nivel {i}" for i in range(1, 11)])
+    
+    col_y1, col_y2 = st.columns(2)
+    with col_y1:
+        st.markdown(f"<div class='academy-card'><h4>{nivel_yoga}</h4><p>Contenido curado por Fabiola para profundizar en la biomecánica y el silencio mental. Incluye simulaciones de asanas y guías de respiración específica.</p></div>", unsafe_allow_html=True)
+        st.button(f"Iniciar Módulo {nivel_yoga}")
+    with col_y2:
+        # Aquí integramos el módulo de respiración con 10 niveles
+        st.markdown("### Guía de Respiración Consciente")
+        lvl_resp = st.slider("Nivel de Intensidad Respiratoria", 1, 10, 1)
+        if st.button(f"🚀 Iniciar Respiración Nivel {lvl_resp}"):
+            bar = st.progress(0)
+            t = st.empty()
+            duracion = 5 + lvl_resp # Escala con el nivel
             for i in range(101):
-                msg = "**Inhala profundamente...** 😤" if i < 45 else "**Exhala suavemente...** 😮‍💨"
-                status.markdown(f"### {msg}")
-                prog.progress(i)
-                time.sleep(0.08)
-            st.success("Ciclo completado. Siente la paz interior.")
-            st.balloons()
-        st.markdown("</div>", unsafe_allow_html=True)
-    with col_p2:
-        if lottie_yoga_zen: st_lottie(lottie_yoga_zen, height=550, key="practice_anim")
+                msg = "**Inhala profundo...**" if i < 50 else "**Exhala suave...**"
+                t.markdown(f"### {msg}")
+                bar.progress(i)
+                time.sleep(duracion / 100)
+            st.success(f"Sesión Nivel {lvl_resp} Completada.")
 
-with tabs[2]: # FABI IA ASESORA
-    st.markdown("## FABI: Inteligencia en Bienestar")
-    col_ia1, col_ia2 = st.columns([1, 2])
-    with col_ia1:
-        if lottie_brain_ia: st_lottie(lottie_brain_ia, height=450, key="ia_anim")
-    with col_ia2:
-        st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-        pregunta = st.text_input("¿Qué área de tu bienestar quieres explorar hoy con la guía de Fabiola?", placeholder="Ej: Hábitos para mejorar la concentración")
-        if st.button("Consultar a FABI Expert"):
-            if pregunta:
-                with st.spinner("Conectando con la esencia wellness..."):
-                    time.sleep(1.5)
-                    st.markdown(f"""
-                    **Respuesta de FABI IA:**
-                    Basada en la metodología de Fabiola Pastén, para mejorar '{pregunta}' te recomiendo centrarte en la 'coherencia cardíaca' matinal. 
-                    Como comunicadora, sé que el ritmo es la base de la salud mental y física.
-                    """)
-            else: st.warning("Por favor, ingresa tu consulta.")
-        st.markdown("</div>", unsafe_allow_html=True)
+with tabs[2]: # FABI IA
+    st.markdown("## FABI IA: Asesora de Bienestar")
+    st.info("FABI utiliza el expertise periodístico y wellness de Fabiola.")
+    pregunta = st.text_input("¿Qué área de tu bienestar quieres explorar hoy?")
+    if st.button("Consultar a FABI Expert"):
+        st.markdown(f"<div class='academy-card'><b>FABI Responde:</b><br>Basada en la metodología Fayoga, para '{pregunta}' te recomiendo iniciar con el nivel 3 de YogaDoc, enfocándonos en la alineación matinal.</div>", unsafe_allow_html=True)
 
-with tabs[3]: # Agendamiento Boutique
-    st.markdown("## Reserva tu Sesión Premium")
-    col_a1, col_a2 = st.columns(2)
-    with col_a1:
-        st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-        with st.form("agenda_premium"):
-            st.text_input("Nombre Completo")
-            st.text_input("Correo Electrónico")
-            st.selectbox("Servicio", ["Yoga Privado", "Taller Biodanza", "Coaching Wellness"])
-            st.date_input("Fecha Preferida", min_value=date.today())
-            if st.form_submit_button("Confirmar Cita Pro"):
-                st.balloons()
-                st.success("Solicitud enviada. Fabiola te contactará para la confirmación.")
-        st.markdown("</div>", unsafe_allow_html=True)
-    with col_a2:
-        st.markdown("#### Ubicación Fayoga Studio (La Serena)")
-        m = folium.Map(location=[-29.9045, -71.2519], zoom_start=15)
-        folium.Marker([-29.9045, -71.2519], popup="Fayoga Studio").add_to(m)
-        st_folium(m, height=450, width=800)
+with tabs[3]: # NIVELES DE ACCESO (SIMULACIÓN DE SUSCRIPCIÓN)
+    st.markdown("## Membresías Boutique")
+    c_m1, c_m2, c_m3 = st.columns(3)
+    with c_m1:
+        st.markdown("<div class='academy-card' style='border-color: #A3B18A;'><h4>Gratuito</h4><p>Acceso a YogaDoc Nivel 1 y 2.<br>Tips semanales de bienestar.</p></div>", unsafe_allow_html=True)
+        st.button("Unirse Gratis")
+    with c_m2:
+        st.markdown("<div class='academy-card' style='border-color: #6B8E23;'><h4>Live</h4><p>Clases en vivo con Fabiola.<br>Acceso a YogaDoc hasta Nivel 5.</p></div>", unsafe_allow_html=True)
+        st.button("Suscribirse a Live")
+    with c_m3:
+        st.markdown("<div class='academy-card' style='border-color: #2D4030;'><h4>Premium</h4><p>Acceso TOTAL a YogaDoc.<br>Consultas personalizadas con Fabiola.</p></div>", unsafe_allow_html=True)
+        st.button("Acceso Premium VIP")
 
-# FOOTER PRO
-st.markdown("<br><hr><p style='text-align: center; opacity: 0.7; font-size: 1.1rem !important;'>FAYOGA 2026 | Wellness SaaS Premium por Fabiola Pastén</p>", unsafe_allow_html=True)
+with tabs[4]: # ALUMNOS
+    st.markdown("## Comunidad de Alumnos")
+    # Simulación de listado de alumnos y progreso
+    df_alumnos = pd.DataFrame({
+        "Alumno": ["Rodrigo Godoy", "Fabiola Pastén", "Alumno 03", "Alumno 04"],
+        "Nivel YogaDoc": [8, 10, 3, 5],
+        "Membresía": ["Premium", "Staff", "Gratuito", "Live"],
+        "Última Clase": ["Hoy", "Ayer", "Hace 3 días", "Hoy"]
+    })
+    st.table(df_alumnos)
+
+# FOOTER
+st.markdown("<br><hr><p style='text-align: center; opacity: 0.6;'>FAYOGA 2026 | Wellness SaaS Premium por Fabiola Pastén</p>", unsafe_allow_html=True)
