@@ -5,7 +5,7 @@ import pandas as pd
 import time
 
 # ==========================================
-# 1. NÚCLEO Y SESIÓN (INTACTO)
+# 1. NÚCLEO Y SESIÓN
 # ==========================================
 st.set_page_config(page_title="Fayoga Academy", page_icon="🧘‍♀️", layout="wide", initial_sidebar_state="collapsed")
 
@@ -26,7 +26,7 @@ lottie_dance = load_lottie("https://lottie.host/0a9f5d34-d9ae-44d5-83e8-8a033b00
 lottie_ia = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
 # ==========================================
-# 2. DISEÑO AVANZADO (GLASSMORPHISM INTACTO)
+# 2. DISEÑO AVANZADO (ALTO CONTRASTE PARA MÓVIL)
 # ==========================================
 st.markdown("""
     <style>
@@ -43,7 +43,7 @@ st.markdown("""
     }
     .brand-subtitle {
         font-family: 'Quicksand', sans-serif; font-size: clamp(1.2rem, 3vw, 2.2rem) !important;
-        text-align: center; color: #6B8E23 !important; font-weight: 700; letter-spacing: 12px; 
+        text-align: center; color: #4A5D4E !important; font-weight: 700; letter-spacing: 12px; 
         margin-top: 15px; text-transform: uppercase;
     }
 
@@ -67,25 +67,27 @@ st.markdown("""
         color: #2D4030 !important; background: rgba(255, 255, 255, 0.6);
         padding: 12px 30px !important; border-radius: 20px !important; transition: all 0.3s ease;
     }
+    /* CORRECCIÓN DE CONTRASTE: FONDO MÁS OSCURO PARA QUE EL BLANCO RESALTE EN MÓVIL */
     .stTabs [aria-selected="true"] { 
-        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%) !important; color: white !important;
-        transform: scale(1.05); border-bottom: none !important;
+        background: linear-gradient(45deg, #2D4030 0%, #4A5D4E 100%) !important; color: white !important;
+        transform: scale(1.05); box-shadow: 0 10px 20px rgba(45, 64, 48, 0.4) !important; border-bottom: none !important;
     }
 
     /* IMÁGENES */
     img { border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
 
-    /* BOTONES INTERNOS */
+    /* BOTONES INTERNOS DE ALTO CONTRASTE */
     .stButton>button {
-        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%); color: white !important; 
+        background: linear-gradient(45deg, #2D4030 0%, #6B8E23 100%); color: white !important; 
         border-radius: 50px !important; border: none !important; padding: 15px 35px !important; 
         font-weight: 700 !important; font-size: 1.2rem !important; width: 100% !important;
+        box-shadow: 0 10px 20px rgba(45, 64, 48, 0.3) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. HEADER MAJESTUOSO Y RADIO (INTACTOS)
+# 3. HEADER MAJESTUOSO
 # ==========================================
 c_logo_1, c_logo_2, c_logo_3 = st.columns([1, 2, 1])
 with c_logo_2:
@@ -95,16 +97,28 @@ with c_logo_2:
 
 st.divider()
 
-with st.expander("📻 Radio Fayoga: Sintoniza tu Frecuencia antes de iniciar"):
-    pistas_radio = {"🌿 Despertar Zen": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", "💧 Flujo de Vinyasa": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"}
-    st.audio(pistas_radio[st.selectbox("🎵 Selecciona la vibra:", list(pistas_radio.keys()))], format="audio/mp3")
+# ==========================================
+# RADIO FAYOGA (AHORA SIEMPRE VISIBLE Y CON AUTOPLAY AL SELECCIONAR)
+# ==========================================
+col_rad1, col_rad2, col_rad3 = st.columns([1, 2, 1])
+with col_rad2:
+    st.markdown("<h4 style='text-align: center; color: #2D4030; font-family: Quicksand;'>📻 Radio Fayoga: Sintoniza tu Frecuencia</h4>", unsafe_allow_html=True)
+    pistas_radio = {
+        "🌿 Despertar Zen (Silencio)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", 
+        "💧 Flujo de Vinyasa (Activo)": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    }
+    # Al seleccionar, el parámetro autoplay=True hace que arranque sola
+    tema_elegido = st.selectbox("Elige tu pista:", list(pistas_radio.keys()), label_visibility="collapsed")
+    st.audio(pistas_radio[tema_elegido], format="audio/mp3", autoplay=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
-# 4. LA NUEVA ARQUITECTURA (CONSERVANDO TODA LA LÓGICA)
+# 4. NAVEGACIÓN Y CONTENIDO TOTAL
 # ==========================================
 tabs = st.tabs(["💎 Inicio", "🧘‍♀️ Practiquemos", "✨ Lo que Hago", "🤖 FABI IA", "🔐 Zona VIP"])
 
-with tabs[0]: # DASHBOARD INICIO
+with tabs[0]: 
     st.markdown("## Bienvenido al Universo Fayoga")
     st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80", use_container_width=True, caption="Un espacio diseñado desde las emociones para tu bienestar integral.")
     
@@ -116,7 +130,7 @@ with tabs[0]: # DASHBOARD INICIO
     with col_d3:
         st.markdown("<div class='premium-card'><h3>Biodanza</h3><p>Integración afectiva y renovación vital a través del movimiento orgánico y la música.</p></div>", unsafe_allow_html=True)
 
-with tabs[1]: # PRACTIQUEMOS (ESTRUCTURA NUEVA + SIMULADOR DE 10 NIVELES RECUPERADO)
+with tabs[1]: 
     st.markdown("## Practiquemos: Encuentra tu Equilibrio")
     
     c_clas1, c_clas2, c_clas3 = st.columns(3)
@@ -129,7 +143,6 @@ with tabs[1]: # PRACTIQUEMOS (ESTRUCTURA NUEVA + SIMULADOR DE 10 NIVELES RECUPER
 
     st.divider()
     
-    # ¡SIMULADOR DE 10 NIVELES INTACTO!
     st.markdown("### Simulador Práctico Interactivo (Niveles 1 al 10)")
     nivel = st.slider("Desliza para explorar los niveles del método Fayoga:", 1, 10, 1)
     
@@ -165,7 +178,7 @@ with tabs[1]: # PRACTIQUEMOS (ESTRUCTURA NUEVA + SIMULADOR DE 10 NIVELES RECUPER
     with col_y2:
         if lottie_yoga_flow: st_lottie(lottie_yoga_flow, height=300)
 
-with tabs[2]: # LO QUE HAGO (EVENTOS + SELECTOR BIODANZA RECUPERADO)
+with tabs[2]: 
     st.markdown("## Lo Que Hago: Experiencias y Emociones")
     
     col_h1, col_h2, col_h3, col_h4 = st.columns(4)
@@ -180,7 +193,6 @@ with tabs[2]: # LO QUE HAGO (EVENTOS + SELECTOR BIODANZA RECUPERADO)
         
     st.divider()
     
-    # ¡SELECTOR DE BIODANZA INTACTO!
     st.markdown("### Biodanza Flow: Secuencias por Etapa Vital")
     categoria_biodanza = st.radio("Selecciona tu grupo para ver la secuencia adaptada:", 
                                   ["💃 Adultos (Dinámico)", "🪑 Adulto Mayor (Suave)", "🧸 Infantil (Lúdico)"], horizontal=True)
@@ -203,7 +215,7 @@ with tabs[2]: # LO QUE HAGO (EVENTOS + SELECTOR BIODANZA RECUPERADO)
     with c_b2:
         if lottie_dance: st_lottie(lottie_dance, height=250)
 
-with tabs[3]: # FABI IA (PASTILLAS INTACTAS)
+with tabs[3]: 
     st.markdown("## FABI IA Asesora: Inteligencia Emocional")
     st.write("Selecciona una 'pastilla' rápida enfocada en tus emociones o escribe tu consulta:")
     
@@ -227,7 +239,7 @@ with tabs[3]: # FABI IA (PASTILLAS INTACTAS)
             st.info(f"**FABI responde:** Evaluando tu inquietud sobre '{pregunta}'... Te sugiero explorar una clase de 'Yoga para Dolencias' enfocada en la liberación emocional de la zona lumbar.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-with tabs[4]: # LOGIN VIP (INTACTO)
+with tabs[4]: 
     st.markdown("## Zona VIP")
     col_log1, col_log2, col_log3 = st.columns([1, 2, 1])
     with col_log2:
