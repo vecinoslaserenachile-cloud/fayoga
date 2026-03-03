@@ -1,45 +1,59 @@
 import streamlit as st
 
-# Configuración de la pestaña del navegador
-st.set_page_config(page_title="Fayoga", page_icon="🧘‍♀️", layout="centered")
+# Configuración de página
+st.set_page_config(page_title="Fayoga | Fabiola Pastén", page_icon="🧘‍♀️", layout="centered")
 
-# Título principal
-st.title("🧘‍♀️ Fayoga - Bienestar y Comunidad")
-st.subheader("Instructora: Fabiola Pastén")
+# --- ESTILO PERSONALIZADO (CSS) ---
+st.markdown("""
+    <style>
+    .main { background-color: #fdfaf6; }
+    h1 { color: #4a5d4e; font-family: 'Helvetica Neue', sans-serif; }
+    .stButton>button {
+        background-color: #6b8e23;
+        color: white;
+        border-radius: 20px;
+        border: none;
+        padding: 10px 25px;
+    }
+    .stButton>button:hover { background-color: #556b2f; color: white; }
+    .sidebar .sidebar-content { background-color: #e9edc9; }
+    </style>
+    """, unsafe_allow_html=True)
 
-# Menú lateral
-menu = st.sidebar.selectbox("Navegación", ["Inicio", "Horarios y Reservas", "Catálogo On-Demand"])
+# --- CABECERA CON ILUSTRACIÓN ---
+st.title("🧘‍♀️ Fayoga")
+st.markdown("#### *Tu espacio de paz en La Serena*")
+
+# --- MENÚ LATERAL ---
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3048/3048374.png", width=100) # Icono decorativo
+menu = st.sidebar.radio("Menú", ["Inicio", "Reservar Clase", "Contenido Exclusivo"])
 
 if menu == "Inicio":
-    st.write("Bienvenido a la plataforma oficial de clases de yoga.")
-    st.divider()
-    st.write("### Perfil de la Instructora")
-    st.write("**Fabiola Pastén** - Instructora Principal y Fundadora")
-    st.info("Únete a nuestras clases para encontrar equilibrio, mejorar tu flexibilidad y potenciar tu bienestar físico y mental.")
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.write("### Bienvenida")
+        st.write("Fayoga es el resultado de años de práctica y dedicación de **Fabiola Pastén**. Aquí no solo entrenas el cuerpo, sino que cultivas la mente.")
+    with col2:
+        # Simulación de clip/ilustración liviana
+        st.image("https://img.freepik.com/free-vector/yoga-meditation-concept-illustration_114360-1453.jpg")
 
-elif menu == "Horarios y Reservas":
-    st.write("### Próximas Clases")
+elif menu == "Reservar Clase":
+    st.write("### Encuentra tu equilibrio")
+    # Tarjetas visuales para clases
+    c1, c2 = st.columns(2)
+    with c1:
+        st.info("**Hatha Yoga**\n\nEnfoque en posturas físicas y respiración.")
+    with c2:
+        st.success("**Vinyasa Flow**\n\nMovimiento fluido y dinámico.")
     
-    # Creamos una tabla visual con los horarios
-    clases = [
-        {"Clase": "Hatha Yoga", "Fecha": "Jueves 10:00 AM", "Nivel": "Principiante", "Cupos libres": 5},
-        {"Clase": "Vinyasa Flow", "Fecha": "Viernes 18:00 PM", "Nivel": "Intermedio", "Cupos libres": 2},
-        {"Clase": "Yoga Restaurativo", "Fecha": "Sábado 09:00 AM", "Nivel": "Todos", "Cupos libres": 10}
-    ]
-    st.table(clases)
-    
-    st.write("### Reservar tu cupo")
-    opcion = st.selectbox("Selecciona la clase que deseas tomar:", ["Hatha Yoga", "Vinyasa Flow", "Yoga Restaurativo"])
-    nombre_alumno = st.text_input("Tu nombre completo:")
-    
-    if st.button("Confirmar Reserva"):
-        if nombre_alumno:
-            st.success(f"¡Listo, {nombre_alumno}! Tu cupo para {opcion} ha sido reservado. Te enviaremos un mensaje de confirmación.")
-        else:
-            st.warning("Por favor, ingresa tu nombre para reservar.")
+    with st.expander("📅 Ver calendario y reservar"):
+        nombre = st.text_input("Nombre completo")
+        clase = st.selectbox("Elige tu clase", ["Mañana (10:00)", "Tarde (19:00)"])
+        if st.button("Reservar Ahora"):
+            st.balloons() # Efecto visual de celebración
+            st.success(f"¡Reserva lista para {nombre}!")
 
-elif menu == "Catálogo On-Demand":
-    st.write("### Videos y Rutinas")
-    st.write("Aquí estarán disponibles las clases grabadas de Fabiola.")
-    # Un espacio reservado (placeholder) para un futuro video
-    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ") # Video de prueba
+elif menu == "Contenido Exclusivo":
+    st.write("### Biblioteca de Bienestar")
+    # Simulación de clips livianos
+    st.video("https://www.youtube.com/watch?v=Ev6LhJ6_X_M") # Ejemplo de yoga suave
