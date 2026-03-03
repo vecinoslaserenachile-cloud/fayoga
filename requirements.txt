@@ -7,3 +7,7 @@ numpy
 Pillow
 streamlit-folium
 folium
+google-generativeai
+streamlit-extras
+sqlalchemy
+pydantic-settings
