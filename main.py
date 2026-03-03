@@ -12,8 +12,6 @@ st.set_page_config(page_title="Fayoga Academy", page_icon="🧘‍♀️", layou
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = "Invitado"
-if 'nivel_actual' not in st.session_state:
-    st.session_state.nivel_actual = 1
 
 # Cargador de Animaciones (Lottie)
 def load_lottie(url: str):
@@ -28,7 +26,7 @@ lottie_dance = load_lottie("https://lottie.host/0a9f5d34-d9ae-44d5-83e8-8a033b00
 lottie_ia = load_lottie("https://lottie.host/07as9pva-9a4c-4a37-975a-5942488390b4/vJ2Wd8vL8Y.json")
 
 # ==========================================
-# 2. DISEÑO AVANZADO (GLASSMORPHISM Y PLACEHOLDERS)
+# 2. DISEÑO AVANZADO (GLASSMORPHISM Y CONTRASTE)
 # ==========================================
 st.markdown("""
     <style>
@@ -57,67 +55,37 @@ st.markdown("""
     .premium-card h2, .premium-card h3, .premium-card h4 { color: #FFFFFF !important; font-family: 'Playfair Display', serif !important; }
     .premium-card p, .premium-card li { color: #FDF9F3 !important; font-family: 'Quicksand', sans-serif !important; font-size: 1.25rem !important; line-height: 1.6; }
 
-    /* BOTONERA CRISTALINA Y ANCHA (TABS DE STREAMLIT HACKEADAS) */
+    /* BOTONERA CRISTALINA Y ANCHA (TABS) */
     .stTabs [data-baseweb="tab-list"] { 
-        gap: 20px; 
-        justify-content: center; 
-        flex-wrap: wrap; 
-        background: rgba(255, 255, 255, 0.2); /* Efecto Cristal */
-        backdrop-filter: blur(15px);
-        padding: 15px;
-        border-radius: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        gap: 20px; justify-content: center; flex-wrap: wrap; 
+        background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
+        padding: 15px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.4);
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
     .stTabs [data-baseweb="tab"] { 
-        font-size: 1.4rem !important; 
-        font-family: 'Quicksand', sans-serif !important; 
-        font-weight: 700 !important; 
-        color: #2D4030 !important; 
-        background: rgba(255, 255, 255, 0.6);
-        padding: 15px 35px !important; 
-        border-radius: 20px !important;
-        transition: all 0.3s ease;
+        font-size: 1.4rem !important; font-family: 'Quicksand', sans-serif !important; font-weight: 700 !important; 
+        color: #2D4030 !important; background: rgba(255, 255, 255, 0.6);
+        padding: 15px 35px !important; border-radius: 20px !important; transition: all 0.3s ease;
     }
     .stTabs [aria-selected="true"] { 
-        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%) !important;
-        color: white !important;
-        transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(107, 142, 35, 0.3) !important;
-        border-bottom: none !important;
+        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%) !important; color: white !important;
+        transform: scale(1.05); box-shadow: 0 10px 20px rgba(107, 142, 35, 0.3) !important; border-bottom: none !important;
     }
 
-    /* ESPACIOS PARA FOTOGRAFÍAS (PLACEHOLDERS) */
-    .img-placeholder {
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(10px);
-        border: 3px dashed #6B8E23;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4A5D4E;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 30px;
-        transition: all 0.3s ease;
-    }
-    .img-placeholder:hover { background: rgba(255, 255, 255, 0.6); transform: scale(1.02); cursor: pointer; }
-    .img-main { height: 400px; font-size: 2.5rem; }
-    .img-col { height: 300px; font-size: 1.8rem; }
-    
+    /* IMÁGENES CON ESTILO */
+    img { border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
+
     /* BOTONES INTERNOS */
     .stButton>button {
-        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%);
-        color: white !important; border-radius: 50px !important; border: none !important;
-        padding: 18px 40px !important; font-weight: 700 !important; font-size: 1.3rem !important; width: 100% !important;
+        background: linear-gradient(45deg, #6B8E23 0%, #A3B18A 100%); color: white !important; 
+        border-radius: 50px !important; border: none !important; padding: 18px 40px !important; 
+        font-weight: 700 !important; font-size: 1.3rem !important; width: 100% !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. HEADER MAJESTUOSO
+# 3. HEADER MAJESTUOSO Y RADIO
 # ==========================================
 c_logo_1, c_logo_2, c_logo_3 = st.columns([1, 2, 1])
 with c_logo_2:
@@ -127,106 +95,103 @@ with c_logo_2:
 
 st.divider()
 
-# Radio Fayoga
 with st.expander("📻 Radio Fayoga: Sintoniza tu Frecuencia antes de iniciar"):
-    pistas_radio = {
-        "🌿 Despertar Zen": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        "💧 Flujo de Vinyasa": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-    }
-    tema_elegido = st.selectbox("🎵 Selecciona la vibra:", list(pistas_radio.keys()))
-    st.audio(pistas_radio[tema_elegido], format="audio/mp3")
+    pistas_radio = {"🌿 Despertar Zen": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", "💧 Flujo de Vinyasa": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"}
+    st.audio(pistas_radio[st.selectbox("🎵 Selecciona la vibra:", list(pistas_radio.keys()))], format="audio/mp3")
 
 # ==========================================
-# 4. NAVEGACIÓN Y CONTENIDO
+# 4. NAVEGACIÓN Y CONTENIDO TOTAL
 # ==========================================
-tabs = st.tabs(["💎 Dashboard", "🎓 YogaDoc Learning", "💃 Biodanza Flow", "🤖 FABI IA", "🔐 Mi Cuenta (VIP)"])
+tabs = st.tabs(["💎 Inicio", "🎓 YogaDoc Learning", "💃 Biodanza Flow", "🤖 FABI IA", "🔐 Mi Cuenta (VIP)"])
 
-with tabs[0]: # DASHBOARD CON FOTOGRAFÍAS
+with tabs[0]: # DASHBOARD CON FOTOS REALES (Reemplazando placeholders)
     st.markdown("## Bienvenido al Universo Fayoga")
-    
-    # 📸 ESPACIO: FOTO PRINCIPAL
-    st.markdown("<div class='img-placeholder img-main'>📸 ESPACIO FOTO PRINCIPAL<br><span style='font-size: 1rem; font-weight: 400;'>(Reemplazar luego con st.image)</span></div>", unsafe_allow_html=True)
+    st.image("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80", use_container_width=True, caption="La integración perfecta entre cuerpo, mente y entorno.")
     
     col_d1, col_d2, col_d3 = st.columns(3)
     with col_d1:
-        st.markdown("""<div class='premium-card'>
-            <h3>Yoga Integral</h3>
-            <p>Alineación y paz mental con el rigor comunicacional de Fabiola. Sesiones 1:1 y grupales.</p>
-        </div>""", unsafe_allow_html=True)
-        # 📸 ESPACIO: FOTO 1
-        st.markdown("<div class='img-placeholder img-col'>📸 ESPACIO FOTO 1</div>", unsafe_allow_html=True)
+        st.markdown("""<div class='premium-card'><h3>Yoga Integral</h3><p>Alineación y paz mental con el rigor comunicacional de Fabiola. Sesiones 1:1 y grupales.</p></div>""", unsafe_allow_html=True)
+        st.image("https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=600&q=80", use_container_width=True)
 
     with col_d2:
-        st.markdown("""<div class='premium-card'>
-            <h3>Biodanza</h3>
-            <p>Integración afectiva y renovación vital a través del movimiento orgánico y la música.</p>
-        </div>""", unsafe_allow_html=True)
-        # 📸 ESPACIO: FOTO 2
-        st.markdown("<div class='img-placeholder img-col'>📸 ESPACIO FOTO 2</div>", unsafe_allow_html=True)
+        st.markdown("""<div class='premium-card'><h3>Biodanza</h3><p>Integración afectiva y renovación vital a través del movimiento orgánico y la música.</p></div>""", unsafe_allow_html=True)
+        st.image("https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=600&q=80", use_container_width=True)
         
     with col_d3:
-        st.markdown("""<div class='premium-card'>
-            <h3>Wellness Pro</h3>
-            <p>Consultoría en bienestar corporativo y comunicación consciente para instituciones.</p>
-        </div>""", unsafe_allow_html=True)
-        # 📸 ESPACIO: FOTO 3 (Opcional, pero equilibra el diseño)
-        st.markdown("<div class='img-placeholder img-col'>📸 ESPACIO FOTO 3</div>", unsafe_allow_html=True)
+        st.markdown("""<div class='premium-card'><h3>Wellness Pro</h3><p>Consultoría en bienestar corporativo y comunicación consciente para instituciones.</p></div>""", unsafe_allow_html=True)
+        st.image("https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?auto=format&fit=crop&w=600&q=80", use_container_width=True)
 
-with tabs[1]: # YOGADOC (PROFUNDIZANDO NIVELES)
-    st.markdown("## YogaDoc: Ruta de Aprendizaje")
+with tabs[1]: # YOGADOC: 10 NIVELES
+    st.markdown("## YogaDoc: Tu Ruta de Aprendizaje (1 al 10)")
+    nivel = st.slider("Desliza para explorar tu nivel:", 1, 10, 1)
+    
+    ejercicios = {
+        1: ("Respiración Diafragmática", "🧘‍♀️ Sentado. Inhala 4s expandiendo barriga, exhala 6s contrayendo."),
+        2: ("Enraizamiento Tadasana", "🧍‍♂️ De pie. Siente las 4 esquinas de tus pies ancladas al suelo."),
+        3: ("Despertar Vinyasa", "🌊 Movimiento continuo. Sincroniza brazos arriba al inhalar, plégate al exhalar."),
+        4: ("Apertura de Corazón", "🐍 Tumbado boca abajo. Eleva el pecho suavemente (Cobra)."),
+        5: ("Equilibrio del Árbol", "🌳 De pie sobre una pierna. Encuentra tu centro visual y físico."),
+        6: ("Torsión Detox", "🪢 Sentado. Gira tu torso desde la base de la columna al exhalar."),
+        7: ("Inversión Suave", "🧱 Piernas en la pared. Acuéstate y eleva las piernas para el retorno venoso."),
+        8: ("Pranayama de Fuego", "🔥 Sentado. Respiración rápida bombeando el ombligo (No de noche)."),
+        9: ("Meditación Caminando", "🚶‍♀️ De pie. Caminata muy lenta y plenamente consciente."),
+        10: ("Integración Total", "🛌 Acostado boca arriba (Savasana). No hagas nada. Solo integra.")
+    }
+    titulo, instruccion = ejercicios[nivel]
+    
     col_y1, col_y2 = st.columns([1.5, 1])
     with col_y1:
-        st.markdown("""<div class='premium-card'>
-            <h3>🌱 Nivel 1: Respiración Primordial</h3>
-            <p>Control del diafragma. Aprenderás a expandir tu capacidad pulmonar para reducir el cortisol.</p>
+        st.markdown(f"""<div class='premium-card'>
+            <h3>Nivel {nivel}: {titulo}</h3>
+            <p>{instruccion}</p>
         </div>""", unsafe_allow_html=True)
-        if st.button("▶️ Iniciar Práctica Nivel 1"):
+        if st.button(f"▶️ Iniciar Práctica Nivel {nivel}"):
             bar = st.progress(0)
             for i in range(101):
                 bar.progress(i)
-                time.sleep(0.02)
-            st.success("¡Nivel 1 Superado!")
-
-        st.markdown("""<div class='premium-card'>
-            <h3>🌿 Nivel 2: Alineación Ósea</h3>
-            <p>Profundizamos en Tadasana para enraizar los pies y alinear la columna vertebral.</p>
-        </div>""", unsafe_allow_html=True)
-        st.button("🔒 Iniciar Nivel 2 (Requiere completar Nivel 1)")
+                time.sleep(0.03)
+            st.success(f"¡Nivel {nivel} completado con éxito!")
     with col_y2:
-        if lottie_yoga_flow: st_lottie(lottie_yoga_flow, height=500)
+        if lottie_yoga_flow: st_lottie(lottie_yoga_flow, height=350)
 
-with tabs[2]: # BIODANZA FLOW
-    st.markdown("## Biodanza Flow")
+with tabs[2]: # BIODANZA FLOW CLASIFICADO
+    st.markdown("## Biodanza Flow: Secuencias por Etapa")
+    categoria = st.radio("Selecciona tu grupo:", ["💃 Adultos", "🪑 Adulto Mayor", "🧸 Infantil"], horizontal=True)
+    
     c_b1, c_b2 = st.columns([1.5, 1])
     with c_b1:
-        st.markdown("""<div class='premium-card'>
-            <h3>Afectividad y Movimiento</h3>
-            <p>La Biodanza es el sistema de integración grupal. No hay coreografías perfectas, hay expresión auténtica.</p>
+        secuencia = "Marcha, Coordinación, Fluidez, Encuentro, Ronda final." if "Adultos" in categoria else "Despertar articular, Balanceo, Caminata, Expresión de brazos, Gratitud." if "Mayor" in categoria else "Juego animal, Saltos, Vuelo libre, Descanso en nido, Abrazo."
+        st.markdown(f"""<div class='premium-card'>
+            <h3>Secuencia {categoria}</h3>
+            <p>Sigue el ritmo: {secuencia}</p>
         </div>""", unsafe_allow_html=True)
     with c_b2:
         if lottie_dance: st_lottie(lottie_dance, height=250)
 
-with tabs[3]: # FABI IA
+with tabs[3]: # FABI IA Y PASTILLAS
     st.markdown("## FABI IA Asesora")
+    st.write("Selecciona una consulta rápida:")
+    p1, p2, p3 = st.columns(3)
+    if p1.button("😴 Insomnio"): st.success("FABI: Te recomiendo el Nivel 10 (Savasana) y la pista 'Despertar Zen' suave.")
+    if p2.button("🔋 Fatiga"): st.success("FABI: El Nivel 3 (Vinyasa) despertará tu sistema nervioso al instante.")
+    if p3.button("💥 Estrés"): st.success("FABI: Haz el Nivel 1 (Respiración) por 3 minutos ahora mismo.")
+
     col_ia1, col_ia2 = st.columns([1, 2])
     with col_ia1:
-        if lottie_ia: st_lottie(lottie_ia, height=300)
+        if lottie_ia: st_lottie(lottie_ia, height=250)
     with col_ia2:
-        st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-        st.markdown("<h3>Consulta a tu mentora virtual</h3>", unsafe_allow_html=True)
-        pregunta = st.text_input("¿En qué área de tu bienestar necesitas orientación hoy?")
+        st.markdown("<div class='premium-card'><h3>O describe cómo te sientes:</h3></div>", unsafe_allow_html=True)
         if st.button("Consultar a FABI Expert"):
-            st.success("**FABI:** Para esa inquietud, te recomiendo realizar el Nivel 1 de YogaDoc.")
-        st.markdown("</div>", unsafe_allow_html=True)
+            st.info("**FABI:** Evaluando tu energía... Explora la meditación caminando (Nivel 9).")
 
-with tabs[4]: # LOGIN OPCIONAL
+with tabs[4]: # LOGIN VIP
     st.markdown("## Zona de Alumnos (VIP)")
     col_log1, col_log2, col_log3 = st.columns([1, 2, 1])
     with col_log2:
         if not st.session_state.logged_in:
             st.markdown("""<div class='premium-card'>
                 <h3>Accede a tu cuenta</h3>
-                <p>Inicia sesión para desbloquear desde el Nivel 3 y acceder a tu progreso.</p>
+                <p>Inicia sesión para desbloquear seguimiento y clases Live.</p>
             </div>""", unsafe_allow_html=True)
             usuario = st.text_input("Usuario")
             if st.button("Ingresar a mi portal"):
