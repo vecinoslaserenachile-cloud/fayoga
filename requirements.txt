@@ -3,4 +3,7 @@ streamlit-lottie
 requests
 plotly
 pandas
+numpy
 Pillow
+streamlit-folium
+folium
